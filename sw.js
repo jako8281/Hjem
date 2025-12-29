@@ -4,7 +4,7 @@ const ASSETS = [
   '/Hjem/index.html',
   '/Hjem/styles.css',
   '/Hjem/app.js',
-  '/Hjem/manifest.webmanifest',
+  '/Hjem/manifest.json',
   '/Hjem/icons/icon-192.png',
   '/Hjem/icons/icon-512.png'
 ];
