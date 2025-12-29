@@ -135,7 +135,7 @@ function renderFullWeek(container){
   });
 }
 
-// --- App init ---
+// --- Install prompt ---
 let deferredPrompt = null;
 window.addEventListener('beforeinstallprompt', (e)=>{
   e.preventDefault();
@@ -152,13 +152,12 @@ window.addEventListener('beforeinstallprompt', (e)=>{
   });
 });
 
-
-if ('serviceWorker' in navigator) {
-  window.addEventListener('load', () => {
-    navigator.serviceWorker.register('sw.js');
+// --- SW registration ---
+if('serviceWorker' in navigator){
+  window.addEventListener('load', ()=>{
+    navigator.serviceWorker.register('/Hjem/sw.js');
   });
 }
-
 
 function init(){
   const now = new Date();
@@ -181,7 +180,6 @@ function init(){
   // Nulstil-knapper
   document.getElementById('resetToday').onclick = ()=>{ localStorage.removeItem(dailyKey); init(); };
   document.getElementById('resetWeek').onclick = ()=>{
-    // Fjern alle nøgler for denne uge
     const prefix = `weekly-${getISOWeek(new Date())}`;
     Object.keys(localStorage).forEach(k=>{ if(k.startsWith(prefix)) localStorage.removeItem(k); });
     init();
@@ -202,18 +200,13 @@ function init(){
   }, 60000);
 }
 
-// Ved månedsskifte: ingen aktiv handling nødvendig, da monthlyKey ændres.
-// Vi rydder dog gamle månedlige nøgler en gang imellem for at holde rent.
 (function cleanOld(){
   const ym = getYearMonth(new Date());
   Object.keys(localStorage).forEach(k=>{
     if(k.startsWith('monthly-') && !k.includes(ym)){
-      // behold kun de sidste 2 måneder som historik
-      // (her sletter vi blot alt der ikke matcher nuværende måned)
       localStorage.removeItem(k);
     }
   });
 })();
 
-// Start
 document.addEventListener('DOMContentLoaded', init);
