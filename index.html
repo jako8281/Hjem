@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="da">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="theme-color" content="#3278d7" />
+  <title>Rengøring – Hjørring</title>
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" sizes="192x192" href="icons/icon-192.png">
+  <link rel="apple-touch-icon" href="icons/icon-192.png">
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <header>
+    <h1>Rengøringsplan</h1>
+    <div id="dateDisplay" aria-live="polite"></div>
+    <div class="controls">
+      <button id="installBtn" class="secondary" hidden>Installér som app</button>
+      <button id="resetToday" class="secondary">Nulstil i dag</button>
+      <button id="resetWeek" class="secondary">Nulstil uge</button>
+      <button id="resetMonth" class="secondary">Nulstil måned</button>
+    </div>
+  </header>
+
+  <main>
+    <section id="daily" class="card">
+      <h2>Dagens gøremål</h2>
+      <div id="dailyList" class="list"></div>
+    </section>
+
+    <section id="weekly" class="card">
+      <h2>Ugens fokuspunkter <span id="todayName" class="pill"></span></h2>
+      <div id="weeklyList" class="list"></div>
+      <details>
+        <summary>Se hele ugeplanen</summary>
+        <div id="fullWeek" class="week-grid"></div>
+      </details>
+    </section>
+
+    <section id="monthly" class="card">
+      <h2>Månedlige opgaver</h2>
+      <p class="hint">Afkrydsning nulstilles automatisk ved månedsskifte.</p>
+      <div id="monthlyList" class="list"></div>
+    </section>
+  </main>
+
+  <footer>
+    <small>Lavt skærmforbrug: få, tydelige opgaver pr. dag. • Kan installeres som webapp på telefonen.</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
