@@ -3,12 +3,13 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Dagens matematik – 25 opgaver (4.–6. klasse)</title>
+  <title>Dagens Opgaver af JBS</title>
   <style>
     :root {
       --accent: #0f766e;
       --ink: #0a0a0a;
       --muted: #525252;
+      --bg: #f3f4f6; /* lys grå */
     }
     * { box-sizing: border-box; }
     html, body { height: 100%; }
@@ -16,43 +17,36 @@
       margin: 0;
       color: var(--ink);
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      background: #ffffff;
+      background: var(--bg);
       line-height: 1.4;
+      text-align: center;            /* centrer al tekst */
     }
     header {
       position: sticky;
       top: 0;
-      background: #fff;
+      background: var(--bg);
       border-bottom: 1px solid #e5e5e5;
       padding: 16px 16px 12px;
     }
     h1 {
-      font-size: 20px;
-      margin: 0 0 4px;
+      font-size: 22px;
+      margin: 0;
       font-weight: 700;
     }
-    .sub { color: var(--muted); margin: 0; font-size: 14px; }
-    .controls { display: flex; gap: 8px; align-items: center; margin: 8px 0; }
-    button {
-      appearance: none;
-      border: 1px solid #d4d4d4;
-      background: #fff;
-      color: var(--ink);
-      padding: 8px 12px;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 14px;
-    }
-    button:hover { border-color: #9ca3af; }
     main { padding: 16px; max-width: 900px; margin: 0 auto; }
-    ol { padding-left: 22px; }
-    li { margin: 10px 0 16px; }
-    .note { color: var(--muted); font-size: 13px; margin-top: 12px; }
+    ol { 
+      padding-left: 0;               /* fjern indrykning */
+      list-style-position: inside;   /* numre indenfor, så det kan centreres pænt */
+      margin: 0 auto;
+    }
+    li { 
+      margin: 10px 0 16px; 
+    }
 
     /* Udskriftsvenlighed */
     @media print {
-      header, .note { display: none !important; }
-      body { color: #000; }
+      header { display: none !important; }
+      body { color: #000; background: #fff; }
       li { break-inside: avoid; page-break-inside: avoid; margin-bottom: 14px; }
       main { padding: 0; }
     }
@@ -60,16 +54,11 @@
 </head>
 <body>
   <header>
-    <h1>Dagens matematik – 25 opgaver (4.–6. klasse)</h1>
-    <div class="controls">
-      <button onclick="window.print()">Udskriv</button>
-    </div>
-    <p class="sub">Dato: <span id="dato"></span> • Opgaverne opdateres automatisk hver dag</p>
+    <h1>Dagens Opgaver af JBS</h1>
   </header>
 
   <main>
     <ol id="opgaveliste"></ol>
-    <p class="note">Tip: Genindlæs siden i morgen for et helt nyt sæt opgaver.</p>
   </main>
 
   <script>
@@ -216,7 +205,7 @@
     };
 
     function lavOpgaver(rng){
-      // Fordelning for at sikre blanding (25 i alt)
+      // Fordeling for at sikre blanding (25 i alt)
       const plan = [
         'addition','subtraction','multiplication','division',
         'fraction_simplify','fraction_of_number','fraction_compare',
@@ -239,7 +228,6 @@
     function render(){
       const nu = new Date();
       const datoStr = localISODate(nu);
-      document.getElementById('dato').textContent = datoStr;
 
       const rng = makeRNG('math-'+datoStr);
       const liste = document.getElementById('opgaveliste');
@@ -249,7 +237,7 @@
       // Let blanding
       shuffle(rng, opgaver);
 
-      opgaver.forEach((txt, i) => {
+      opgaver.forEach((txt) => {
         const li = document.createElement('li');
         li.textContent = txt;
         liste.appendChild(li);
