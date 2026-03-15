@@ -19,7 +19,7 @@
       font-family: system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji", "Segoe UI Emoji";
       background: var(--bg);
       line-height: 1.4;
-      text-align: center;            /* centrer al tekst */
+      text-align: left;             /* tekst venstrestillet */
     }
     header {
       position: sticky;
@@ -35,9 +35,8 @@
     }
     main { padding: 16px; max-width: 900px; margin: 0 auto; }
     ol { 
-      padding-left: 0;               /* fjern indrykning */
-      list-style-position: inside;   /* numre indenfor, så det kan centreres pænt */
-      margin: 0 auto;
+      padding-left: 22px; 
+      list-style-position: outside;
     }
     li { 
       margin: 10px 0 16px; 
@@ -62,22 +61,20 @@
   </main>
 
   <script>
-    // --- Hjælpefunktioner: seedet tilfældighed så opgaverne ændrer sig hver dag ---
     function pad2(n){ return String(n).padStart(2, '0'); }
     function localISODate(d){
       const y = d.getFullYear();
       const m = pad2(d.getMonth()+1);
       const day = pad2(d.getDate());
-      return `${y}-${m}-${day}`; // Lokal dato (YYYY-MM-DD)
+      return `${y}-${m}-${day}`;
     }
 
-    // xfnv1a + sfc32 for deterministisk RNG baseret på dato
     function xfnv1a(str){
       for(var i=0,h=2166136261>>>0;i<str.length;i++){
         h = Math.imul(h ^ str.charCodeAt(i), 16777619);
       }
       return function(){
-        h += h<<1; h ^= h>>>1; h += h<<3; h ^= h>>>7; h += h<<15; // ekstra blanding
+        h += h<<1; h ^= h>>>1; h += h<<3; h ^= h>>>7; h += h<<15;
         return h>>>0;
       }
     }
@@ -97,8 +94,7 @@
       return sfc32(h(), h(), h(), h());
     }
 
-    // --- Tilfældige værktøjer ---
-    function randint(rng, min, max){ // inkl. begge ender
+    function randint(rng, min, max){
       return Math.floor(rng() * (max - min + 1)) + min;
     }
     function choice(rng, arr){ return arr[Math.floor(rng()*arr.length)]; }
@@ -109,9 +105,7 @@
       }
       return arr;
     }
-    function gcd(a,b){ while(b){ [a,b] = [b, a%b]; } return Math.abs(a); }
 
-    // --- Opgavegeneratorer (tekst på dansk) ---
     const gens = {
       addition(rng){
         const a = randint(rng, 100, 999);
@@ -173,7 +167,6 @@
         return `Hvor mange minutter er der i ${h} timer og ${m} minutter?`;
       },
       equation_solve(rng){
-        // x + a = b eller a × x = b (heltal)
         if(rng() < 0.5){
           const a = randint(rng, 5, 80);
           const x = randint(rng, 3, 40);
@@ -205,19 +198,16 @@
     };
 
     function lavOpgaver(rng){
-      // Fordeling for at sikre blanding (25 i alt)
       const plan = [
         'addition','subtraction','multiplication','division',
         'fraction_simplify','fraction_of_number','fraction_compare',
         'area_rectangle','perimeter_rectangle','number_pattern',
         'time_convert','equation_solve','word_problem'
       ];
-      // Start med hver type mindst én gang hvor det giver mening
       const opgaver = [];
       const mindstEn = ['addition','subtraction','multiplication','division','fraction_simplify','area_rectangle','perimeter_rectangle','number_pattern','equation_solve'];
       mindstEn.forEach(t => opgaver.push(gens[t](rng)));
 
-      // Fyld op til 25 med tilfældige typer fra plan
       while(opgaver.length < 25){
         const t = choice(rng, plan);
         opgaver.push(gens[t](rng));
@@ -234,7 +224,6 @@
       liste.innerHTML = '';
 
       const opgaver = lavOpgaver(rng);
-      // Let blanding
       shuffle(rng, opgaver);
 
       opgaver.forEach((txt) => {
